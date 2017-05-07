@@ -1,0 +1,36 @@
+= mbg-optimisticlock-plugin
+
+== Overview（概要）
+これはMyBatisGeneratorで生成するMapperInterface/MapperXmlに対して楽観ロック用のSQLを追加するためのプラグインです。
+
+== Description（詳細）
+MyBatisGeneratorでは、楽観および悲観ロックに対応するSQLを出力してはくれません。 +
+このプラグインでは、楽観ロックに対応するSQLおよびMapperのインタフェースを作成します。 +
+楽観ロックに利用するカラムは外部定義（generateConfig.xml）で定義することが可能ですあり、本当に存在しなければエラーとなります。 +
+
+== How To Use（使い方）
+=== MyBatisGeneratorの設定ファイルの記述
+
+MyBatisGeneratorの出力設定ファイルにプラグイン利用の定義を行います。 +
+この定義の他にこのプラグインのクラスパス設定等は利用する起動方法に合わせて設定してください。
+
+[source,XML]
+----
+<plugin type="com.zomu.t.mbg.optimisticlock.plugin.OptimisticLockUpdatePlugin">
+	<property name="versionColumnName" value="任意の存在するカラム名"/> //<1>
+</plugin>
+----
+
+<1> カラム名の指定は必須ではなく、デフォルトでは「version」を利用するようになっています。ここで指定したカラムは実際に存在しなければ出力時にエラーとなります。
+
+== How To Build
+Gradleの単純なプロジェクトであるため、以下のコマンドでビルド可能です。 +
+作成されたJarを利用してください。
+
+[source,SH]
+----
+gradle clean build
+----
+
+
+
