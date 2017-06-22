@@ -15,6 +15,7 @@ import org.mybatis.generator.api.dom.java.Parameter;
 import org.mybatis.generator.api.dom.xml.Document;
 import org.mybatis.generator.api.dom.xml.XmlElement;
 
+import com.zomu.t.mbg.optimisticlock.generator.UpdateByExampleSelectiveOptimisticLockElementGenerator;
 import com.zomu.t.mbg.optimisticlock.generator.UpdateByPrimaryKeySelectiveOptimisticLockElementGenerator;
 
 /**
@@ -110,7 +111,7 @@ public class OptimisticLockUpdatePlugin extends PluginAdapter {
 				introspectedTable, context, versionColumn);
 		XmlElement newElement = xmlGen.getElements();
 		addElement(newElement, introspectedTable.getFullyQualifiedTable());
-		return true;
+		return super.sqlMapUpdateByPrimaryKeySelectiveElementGenerated(newElement, introspectedTable);
 	}
 
 	/**
@@ -125,6 +126,36 @@ public class OptimisticLockUpdatePlugin extends PluginAdapter {
 		addOptimisticLockMethod(method, interfaze, "", "");
 		return true;
 	}
+
+	/* ---------------------------------------------------------------------- */
+
+	/* ---------------------------------------------------------------------- */
+	/* UpdateByExampleKeySelective */
+	/* ---------------------------------------------------------------------- */
+
+//	/**
+//	 * {@inheritDoc}
+//	 */
+//	@Override
+//	public boolean sqlMapUpdateByExampleSelectiveElementGenerated(XmlElement element,
+//			IntrospectedTable introspectedTable) {
+//		// プライマリーキー選択アップデートの楽観ロック処理のSQLMap生成処理
+//		UpdateByExampleSelectiveOptimisticLockElementGenerator xmlGen = new UpdateByExampleSelectiveOptimisticLockElementGenerator(
+//				introspectedTable, context, versionColumn);
+//		XmlElement newElement = xmlGen.getElements();
+//		addElement(newElement, introspectedTable.getFullyQualifiedTable());
+//		return super.sqlMapUpdateByExampleSelectiveElementGenerated(element, introspectedTable);
+//	}
+//
+//	/**
+//	 * {@inheritDoc}
+//	 */
+//	@Override
+//	public boolean clientUpdateByExampleSelectiveMethodGenerated(Method method, Interface interfaze,
+//			IntrospectedTable introspectedTable) {
+//		addOptimisticLockMethod(method, interfaze, "", "");
+//		return super.clientUpdateByExampleSelectiveMethodGenerated(method, interfaze, introspectedTable);
+//	}
 
 	/* ---------------------------------------------------------------------- */
 
@@ -152,7 +183,7 @@ public class OptimisticLockUpdatePlugin extends PluginAdapter {
 	 */
 	private void addOptimisticLockMethod(Method method, Interface interfaze, String search, String replace) {
 
-		// WithSettingメソッドを生成
+		// OptimisticLockメソッドを生成
 		Method newMethod = new Method(method);
 
 		for (Parameter p : newMethod.getParameters()) {
